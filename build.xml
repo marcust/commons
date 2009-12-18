@@ -13,6 +13,7 @@
        <include name="google-collect-1.0-rc3.jar" />
        <include name="org-thiesen-gitant-v0.0.5.jar" />
        <include name="org.eclipse.jgit-0.6.0-SNAPSHOT.jar" />
+       <include name="commons-lang-2.4.jar" />
      </fileset>	
 
      
@@ -32,6 +33,24 @@
            propertyPrefix=""
            displayInfo="true"
            />
+         <condition property="version" value="${git.tag}-SNAPSHOT">
+           <and>
+             <istrue value="${git.workingcopy.dirty}" />
+             <istrue value="${git.tag.dirty}" />
+           </and>
+         </condition>
+         <condition property="version" value="${git.tag}-${git.commit}-SNAPSHOT">
+           <and>
+             <isfalse value="${git.workingcopy.dirty}" />
+             <istrue value="${git.tag.dirty}" />
+           </and>
+         </condition>
+         <condition property="version" value="${git.tag}">
+           <and>
+             <isfalse value="${git.workingcopy.dirty}" />
+             <isfalse value="${git.tag.dirty}" />
+           </and>
+         </condition>
     </target>
 
 
@@ -60,13 +79,12 @@
             <compilerarg value="-Xlint:all"/>
             <classpath>
                 <fileset refid="libs"/>
-                <fileset refid="jgit" />
             </classpath>
          </javac>
      </target>
      
      <target name="jar" depends="compile" description="make jar">
-	 <jar jarfile="${build}/${pkgbase}-${git.tag}.jar">
+	 <jar jarfile="${build}/${pkgbase}-${version}.jar">
            <fileset dir="${classes}">
               <include name="**/*.class"/>
            </fileset>
