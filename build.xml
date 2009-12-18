@@ -51,6 +51,7 @@
            <and>
              <isfalse value="${git.workingcopy.dirty}" />
              <isfalse value="${git.tag.dirty}" />
+             <isset property="${git.tag}" />
            </and>
          </condition>
          <condition property="version" value="${git.commit}-SNAPSHOT">
