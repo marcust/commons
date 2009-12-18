@@ -33,25 +33,31 @@
            propertyPrefix=""
            displayInfo="true"
            />
-         <condition property="version" value="${git.tag}-SNAPSHOT">
+        <condition property="version" value="${git.tag}-SNAPSHOT">
            <and>
              <istrue value="${git.workingcopy.dirty}" />
              <istrue value="${git.tag.dirty}" />
-             <isset property="${git.tag}" />
+             <not>
+               <equals arg1="${git.tag}" arg2="" />
+             </not>
            </and>
          </condition>
          <condition property="version" value="${git.tag}-${git.commit}-SNAPSHOT">
            <and>
              <isfalse value="${git.workingcopy.dirty}" />
              <istrue value="${git.tag.dirty}" />
-             <isset property="${git.tag}" />
+             <not>
+               <equals arg1="${git.tag}" arg2="" />
+             </not>
            </and>
          </condition>
          <condition property="version" value="${git.tag}">
            <and>
              <isfalse value="${git.workingcopy.dirty}" />
              <isfalse value="${git.tag.dirty}" />
-             <isset property="${git.tag}" />
+             <not>
+               <equals arg1="${git.tag}" arg2="" />
+             </not>
            </and>
          </condition>
          <condition property="version" value="${git.commit}-SNAPSHOT">
